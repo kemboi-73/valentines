@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="icon.jpeg" type="image/x-icon">
+
+    <title>Be My Valentine?</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: pink;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin-top: 50px;
+            padding: 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .buttons {
+            margin-top: 40px; /*space for the button */
+            position: relative;
+            z-index: 1;
+        }
+        .yes {
+            font-size: 16px;
+            padding: 10px 20px;
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s, margin-top 0.3s;
+            z-index: 2;
+            transform-origin: top center; /* Button grows from top to bottom */
+        }
+        .no {
+            font-size: 16px;
+            padding: 10px 20px;
+            background-color: gray;
+            color: white;
+            border: none;
+            cursor: pointer;
+            position: absolute;
+            z-index: 2;
+        }
+        .animation {
+            margin-top: 20px;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            z-index: 3;
+            position: relative;
+        }
+        .character-img {
+            width: 150px;
+            height: 150px;
+        }
+        @media (max-width: 600px) {
+            .no {
+                position: static;
+                margin-top: 10px;
+            }
+            /* Allow Yes button to grow without blocking text */
+            .yes {
+                margin-top: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Will you be my Valentine?</h1>
+        <div class="animation" id="character">
+            <img src="patrick-spongebob.gif" class="character-img" id="character-img">
+        </div>
+        <div class="message" id="message"></div>
+        <div class="buttons">
+            <button class="yes" onclick="acceptLove()">Yes</button>
+            <button class="no" onclick="rejectLove()">No</button>
+        </div>
+    </div>
+
+    <!-- Audio element for sound -->
+    <audio id="backgroundSound" src="audio.mp3" preload="auto" loop></audio>
+
+    <script>
+        // Play the background sound when the page loads
+        window.onload = function() {
+            document.getElementById('backgroundSound').play();
+        };
+
+        let noTexts = [
+            "Are you sure?", "Even if I ask nicely?", "Uko sure sure?", "I might cry...", "You monster!", "I might die...",
+            "Think again...", "You're breaking my heart!", "Last chance!", "You're so cruel!", "Pretty please?", 
+            "You can't say no forever...", "Don't make me beg!", "I can't take this rejection!", "Stop being mean!", 
+            "I won't give up!", "Please reconsider!", "It hurts, you know!", "Why won't you love me?", 
+            "You're crushing my heart!", "You’re so heartless!", "I promise I’m a great Valentine!", 
+            "How about a second chance?", "This is torture!", "You’re leaving me heartbroken!", 
+            "Please don’t leave me alone!", "Think of all the good times we’ll have!", 
+            "I’ll make you the best Valentine ever!", "You’re being so cold!", "I can’t stop thinking about you!", 
+            "We could be so happy together!", "Don’t you want to be mine?", "You’re my soulmate, I’m sure of it!", 
+            "What do you have to lose?", "We’d be perfect together!", "You’re making a big mistake!", 
+            "Are you sure you’re not interested?", "Can’t we try just once?", "Think about it for a second!",
+            "Come on, I’m cute!", "You’ll regret it if you say no!", "I’ll make it up to you, promise!"
+        ];
+
+        let gifs = [
+            "catbeg.gif", "catbeg0.gif", "catbeg1.gif", "catbeg2.gif", "catbeg3.gif",
+            "catbeg4.gif", "catbeg5.gif", "catbeg3.gif"
+        ];
+
+        let index = 0;
+        let yesButton = document.querySelector(".yes");
+        let noButton = document.querySelector(".no");
+        let characterImg = document.getElementById("character-img");
+        let messageDiv = document.getElementById("message");
+
+        // Continue growing the "Yes" button with each rejection
+        function rejectLove() {
+            // Display rejection message, cycle through the list if it exceeds the length
+            messageDiv.textContent = noTexts[index % noTexts.length]; // Use modulo to keep looping through messages
+            index++;
+
+            // Continue growing the Yes button on every rejection
+            let scaleValue = 1 + index * 0.3; // Increase the scale factor with each rejection
+            yesButton.style.transform = `scale(${scaleValue})`; // Apply the scaling
+
+            characterImg.src = gifs[index % gifs.length];  // Changes gif after each rejection
+            moveNoButton();
+        }
+
+        // Randomly move the "No" button
+        function moveNoButton() {
+            let x = Math.random() * window.innerWidth * 0.6 - window.innerWidth * 0.3;
+            let y = Math.random() * window.innerHeight * 0.6 - window.innerHeight * 0.3;
+            noButton.style.transform = `translate(${x}px, ${y}px)`;
+        }
+
+        // Display love message when "Yes" is clicked
+        function acceptLove() {
+            document.querySelector(".container").innerHTML = "<h1>I love you, pookie! 💖</h1><img src='couple-ilu.gif' class='characterf-img'>";
+        }
+    </script>
+</body>
+</html>
